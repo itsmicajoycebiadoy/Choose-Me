@@ -27,7 +27,7 @@ export default function TimerCircle({ timer, onPause, onResume, isRunning }) {
         {timer}
       </div>
       <div style={{ marginTop: 8, display: "flex", gap: 8, justifyContent: "center" }}>
-        {!isRunning && timer > 0 && timer < 5 && (
+        {!isRunning && timer > 0 && timer < 5 && timer !== 0 && (
           <button
             onClick={onResume}
             style={{
@@ -39,12 +39,21 @@ export default function TimerCircle({ timer, onPause, onResume, isRunning }) {
               fontSize: "0.7rem",
               cursor: "pointer",
               fontWeight: 600,
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(46,213,115,0.4)";
+              e.currentTarget.style.transform = "scale(1.05)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(46,213,115,0.2)";
+              e.currentTarget.style.transform = "scale(1)";
             }}
           >
             ▶️ Play
           </button>
         )}
-        {isRunning && (
+        {isRunning && timer > 0 && (
           <button
             onClick={onPause}
             style={{
@@ -56,6 +65,15 @@ export default function TimerCircle({ timer, onPause, onResume, isRunning }) {
               fontSize: "0.7rem",
               cursor: "pointer",
               fontWeight: 600,
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(255,71,87,0.4)";
+              e.currentTarget.style.transform = "scale(1.05)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(255,71,87,0.2)";
+              e.currentTarget.style.transform = "scale(1)";
             }}
           >
             ⏸️ Pause

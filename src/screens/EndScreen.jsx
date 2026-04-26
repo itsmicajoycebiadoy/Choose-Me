@@ -23,8 +23,12 @@ export default function EndScreen({ score, totalAnswered, onReset }) {
           </div>
         ))}
       </div>
-      <button onClick={onReset} style={{ background: "linear-gradient(135deg, #FF4757, #A55EEA)", color: "#fff", border: "none", borderRadius: 50, padding: "16px 48px", fontSize: "1.2rem", fontWeight: 700, cursor: "pointer", boxShadow: "0 8px 32px rgba(255,71,87,0.4)", transition: "transform 0.2s" }}
-        onMouseEnter={e => e.target.style.transform = "scale(1.07)"} onMouseLeave={e => e.target.style.transform = "scale(1)"}>
+      <button 
+        onClick={onReset} 
+        style={{ background: "linear-gradient(135deg, #FF4757, #A55EEA)", color: "#fff", border: "none", borderRadius: 50, padding: "16px 48px", fontSize: "1.2rem", fontWeight: 700, cursor: "pointer", boxShadow: "0 8px 32px rgba(255,71,87,0.4)", transition: "transform 0.2s" }}
+        onMouseEnter={e => e.currentTarget.style.transform = "scale(1.07)"} 
+        onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+      >
         Maglaro Ulit! 🔄
       </button>
     </div>

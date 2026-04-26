@@ -16,16 +16,13 @@ export function useTimer(duration, onExpire) {
   }, []);
 
   const start = useCallback(() => {
-    // Reset state
     setTimer(duration);
     expireTriggered.current = false;
-    stop(); // clear any existing interval
+    stop();
     
-    // Start new interval
     intervalRef.current = setInterval(() => {
       setTimer((prev) => {
         if (prev <= 1) {
-          // Time's up!
           if (intervalRef.current) {
             clearInterval(intervalRef.current);
             intervalRef.current = null;
@@ -49,8 +46,8 @@ export function useTimer(duration, onExpire) {
   }, []);
 
   const resume = useCallback(() => {
-    if (isRunning) return; // already running
-    if (timer <= 0) return; // already expired
+    if (isRunning) return;
+    if (timer <= 0) return;
     
     intervalRef.current = setInterval(() => {
       setTimer((prev) => {
