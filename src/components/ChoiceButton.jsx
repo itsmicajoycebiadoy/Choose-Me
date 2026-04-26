@@ -1,6 +1,6 @@
 import { resumeAudioContext } from "../utils/sounds";
 
-const LABELS = ["🅰️", "🅱️", "🇨", "🇩"];
+const LABELS = ["A", "B", "C", "D"];
 
 export default function ChoiceButton({ choice, index, chosen, answer, feedback, onAnswer, disabled }) {
   const answered = chosen !== null || feedback === "timeout" || disabled;
