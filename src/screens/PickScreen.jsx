@@ -42,7 +42,7 @@ export default function PickScreen({ usedColors, score, totalAnswered, onPick })
           margin: "0 0 32px",
         }}
       >
-        Pumili ng kulay! 🎯
+        Choose a Color!
       </h2>
 
       <div

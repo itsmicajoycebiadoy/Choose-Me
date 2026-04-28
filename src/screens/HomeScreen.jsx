@@ -31,7 +31,7 @@ export default function HomeScreen({ onStart }) {
           marginBottom: 36,
         }}
       >
-        Pumili ng kulay at sagutin ang tanong 🧠
+        Choose a Color and Answer the Question 🧠
       </p>
 
       <div

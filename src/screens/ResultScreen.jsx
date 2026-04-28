@@ -1,58 +1,179 @@
 import COLORS from "../data/colors";
 
-export default function ResultScreen({ question, feedback, score, totalAnswered, usedColors, onNext }) {
+export default function ResultScreen({ 
+  question, 
+  feedback, 
+  usedColors, 
+  onNext,
+  onRetry,
+  onChangeColor
+}) {
   const isLast = usedColors.length + 1 >= COLORS.length;
+
   return (
-    <div style={{ width: "100%", maxWidth: 600, textAlign: "center", animation: "slideUp 0.4s ease" }}>
-      <div style={{ fontSize: 64, marginBottom: 16 }}>{feedback === "correct" ? "🎉" : "😬"}</div>
+    <div style={{ 
+      width: "100%", 
+      maxWidth: 600, 
+      textAlign: "center", 
+      animation: "slideUp 0.4s ease" 
+    }}>
+      
+      <div style={{ fontSize: 64, marginBottom: 16 }}>
+        {feedback === "correct" ? "🎉" : feedback === "timeout" ? "⏰" : "😬"}
+      </div>
+
       <h2 style={{ 
         color: feedback === "correct" ? "#2ED573" : "#FF4757", 
         fontSize: "clamp(1.5rem, 4vw, 2.2rem)", 
-        fontWeight: 900, 
-        margin: "0 0 8px" 
+        fontWeight: 900 
       }}>
-        {feedback === "correct" ? "Tama! 🏆" : feedback === "timeout" ? "Naubos ang oras! ⏰" : "Mali! ❌"}
+        {feedback === "correct" 
+          ? "Correct!" 
+          : feedback === "timeout" 
+          ? "Time's up!" 
+          : "Wrong!"}
       </h2>
-      <div style={{ 
-        background: "rgba(255,255,255,0.06)", 
-        border: "1px solid rgba(255,255,255,0.12)", 
-        borderRadius: 20, 
-        padding: "20px 24px", 
-        margin: "20px 0", 
-        backdropFilter: "blur(12px)" 
+
+      <div style={{
+        background: "rgba(46, 213, 115, 0.12)",
+        border: "2px solid #2ED573",
+        borderRadius: 16,
+        padding: "24px 32px",
+        marginBottom: 32,
+        backdropFilter: "blur(8px)"
       }}>
-        <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: 2, margin: "0 0 8px" }}>
-          Tamang Sagot
+        <p style={{ 
+          color: "#2ED573", 
+          fontWeight: 700,
+          fontSize: "1.2rem",
+          margin: "0 0 16px 0"
+        }}>
+          Answer: {question.answer}
         </p>
-        <p style={{ color: "#2ED573", fontWeight: 700, fontSize: "1.1rem", margin: "0 0 12px" }}>
-          {question.answer}
-        </p>
-        <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.95rem", margin: 0, lineHeight: 1.5 }}>
+        
+        <p style={{ 
+          color: "rgba(255,255,255,0.85)",
+          fontSize: "0.95rem",
+          lineHeight: "1.6",
+          margin: 0
+        }}>
           {question.explanation}
         </p>
       </div>
-      <div style={{ color: "rgba(255,255,255,0.5)", marginBottom: 24, fontSize: "0.9rem" }}>
-        Score: <span style={{ color: "#FFA502", fontWeight: 700, fontSize: "1.1rem" }}>{score}</span> / {totalAnswered}
-      </div>
-      <button 
-        onClick={onNext} 
-        style={{ 
-          background: "linear-gradient(135deg, #2ED573, #1E90FF)", 
-          color: "#fff", 
-          border: "none", 
-          borderRadius: 50, 
-          padding: "14px 40px", 
-          fontSize: "1.1rem", 
-          fontWeight: 700, 
-          cursor: "pointer", 
-          boxShadow: "0 8px 24px rgba(46,213,115,0.4)", 
-          transition: "transform 0.2s" 
-        }}
-        onMouseEnter={e => e.currentTarget.style.transform = "scale(1.06)"} 
-        onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-      >
-        {isLast ? "Tingnan ang Resulta 📊" : "Susunod na Kulay →"}
-      </button>
+
+      {/* 🔁 RETRY BUTTON */}
+      {feedback !== "correct" && (
+        <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+          <button 
+            onClick={onRetry}
+            style={{
+              background: "linear-gradient(135deg, #FF4757, #FF6B81)",
+              color: "#fff",
+              border: "none",
+              borderRadius: 50,
+              padding: "16px 48px",
+              fontSize: "1.2rem",
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "0 8px 32px rgba(255,71,87,0.5)",
+              transition: "transform 0.2s, box-shadow 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.07)";
+              e.currentTarget.style.boxShadow = "0 12px 40px rgba(255,71,87,0.7)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "0 8px 32px rgba(255,71,87,0.5)";
+            }}
+          >
+            Retry Question
+          </button>
+
+          <button 
+            onClick={onChangeColor}
+            style={{
+              background: "linear-gradient(135deg, #FFA502, #FFB633)",
+              color: "#fff",
+              border: "none",
+              borderRadius: 50,
+              padding: "16px 48px",
+              fontSize: "1.2rem",
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "0 8px 32px rgba(255, 165, 2, 0.5)",
+              transition: "transform 0.2s, box-shadow 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.07)";
+              e.currentTarget.style.boxShadow = "0 12px 40px rgba(255, 165, 2, 0.7)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "0 8px 32px rgba(255, 165, 2, 0.5)";
+            }}
+          >
+            Change Color
+          </button>
+        </div>
+      )}
+
+      {/* ➡️ NEXT BUTTON */}
+      {feedback === "correct" && (
+        <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+          <button 
+            onClick={onNext}
+            style={{
+              background: "linear-gradient(135deg, #A55EEA, #1E90FF)",
+              color: "#fff",
+              border: "none",
+              borderRadius: 50,
+              padding: "16px 48px",
+              fontSize: "1.2rem",
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "0 8px 32px rgba(165,94,234,0.5)",
+              transition: "transform 0.2s, box-shadow 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.07)";
+              e.currentTarget.style.boxShadow = "0 12px 40px rgba(165,94,234,0.7)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "0 8px 32px rgba(165,94,234,0.5)";
+            }}
+          >
+            {isLast ? "Finish" : "Next"}
+          </button>
+
+          <button 
+            onClick={onChangeColor}
+            style={{
+              background: "linear-gradient(135deg, #FFA502, #FFB633)",
+              color: "#fff",
+              border: "none",
+              borderRadius: 50,
+              padding: "16px 48px",
+              fontSize: "1.2rem",
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "0 8px 32px rgba(255, 165, 2, 0.5)",
+              transition: "transform 0.2s, box-shadow 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.07)";
+              e.currentTarget.style.boxShadow = "0 12px 40px rgba(255, 165, 2, 0.7)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "0 8px 32px rgba(255, 165, 2, 0.5)";
+            }}
+          >
+            Change Color
+          </button>
+        </div>
+      )}
     </div>
   );
 }

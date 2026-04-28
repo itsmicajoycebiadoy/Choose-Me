@@ -6,76 +6,76 @@ export function useTimer(duration, onExpire) {
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
   const expireTriggered = useRef(false);
+  const onExpireRef = useRef(onExpire);
 
-  const stop = useCallback(() => {
+  // Always keep onExpireRef pointing to latest callback
+  useEffect(() => {
+    onExpireRef.current = onExpire;
+  }, [onExpire]);
+
+  const clearTick = useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+  }, []);
+
+  const stop = useCallback(() => {
+    clearTick();
     setIsRunning(false);
+  }, [clearTick]);
+
+  const runInterval = useCallback(() => {
+    intervalRef.current = setInterval(() => {
+      setTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+          setIsRunning(false);
+          return 0;
+        }
+        playSound("tick");
+        return prev - 1;
+      });
+    }, 1000);
+    setIsRunning(true);
   }, []);
 
   const start = useCallback(() => {
-    setTimer(duration);
+    clearTick();
     expireTriggered.current = false;
-    stop();
-    
-    intervalRef.current = setInterval(() => {
-      setTimer((prev) => {
-        if (prev <= 1) {
-          if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
-          }
-          setIsRunning(false);
-          return 0;
-        }
-        playSound("tick");
-        return prev - 1;
-      });
-    }, 1000);
-    setIsRunning(true);
-  }, [duration, stop]);
+    setTimer(duration);
+    setTimeout(() => {
+      runInterval();
+    }, 0);
+  }, [duration, clearTick, runInterval]);
 
   const pause = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-      setIsRunning(false);
-    }
-  }, []);
+    clearTick();
+    setIsRunning(false);
+  }, [clearTick]);
 
   const resume = useCallback(() => {
-    if (isRunning) return;
-    if (timer <= 0) return;
-    
-    intervalRef.current = setInterval(() => {
-      setTimer((prev) => {
-        if (prev <= 1) {
-          if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
-          }
-          setIsRunning(false);
-          return 0;
-        }
-        playSound("tick");
-        return prev - 1;
-      });
-    }, 1000);
-    setIsRunning(true);
-  }, [timer, isRunning]);
+    setTimer((t) => {
+      if (t <= 0) return t;
+      if (!intervalRef.current) {
+        runInterval();
+      }
+      return t;
+    });
+  }, [runInterval]);
 
+  // Fire onExpire exactly once when timer reaches 0
   useEffect(() => {
     if (timer === 0 && !expireTriggered.current) {
       expireTriggered.current = true;
-      onExpire && onExpire();
+      onExpireRef.current && onExpireRef.current();
     }
-  }, [timer, onExpire]);
+  }, [timer]);
 
   useEffect(() => {
-    return () => stop();
-  }, [stop]);
+    return () => clearTick();
+  }, [clearTick]);
 
   return { timer, start, stop, pause, resume, isRunning };
 }

@@ -8,7 +8,7 @@ export default function EndScreen({ score, totalAnswered, onReset }) {
     <div style={{ textAlign: "center", animation: "fadeIn 0.6s ease", maxWidth: 500 }}>
       <Confetti />
       <div style={{ fontSize: 72, marginBottom: 12 }}>{medal}</div>
-      <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 5vw, 2.8rem)", fontWeight: 900, margin: "0 0 8px" }}>Tapos na! 🎊</h2>
+      <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 5vw, 2.8rem)", fontWeight: 900, margin: "0 0 8px" }}>It’s over! 🎊</h2>
       <p style={{ color: "rgba(255,255,255,0.5)", marginBottom: 24 }}>Final Score</p>
       <div style={{ background: "linear-gradient(135deg, rgba(165,94,234,0.2), rgba(30,144,255,0.2))", border: "2px solid rgba(165,94,234,0.4)", borderRadius: 24, padding: "32px", marginBottom: 28 }}>
         <div style={{ fontSize: "4rem", fontWeight: 900, color: "#fff", lineHeight: 1 }}>
@@ -29,7 +29,7 @@ export default function EndScreen({ score, totalAnswered, onReset }) {
         onMouseEnter={e => e.currentTarget.style.transform = "scale(1.07)"} 
         onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
       >
-        Maglaro Ulit! 🔄
+        Retry Again!
       </button>
     </div>
   );
