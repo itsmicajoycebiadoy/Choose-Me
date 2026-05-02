@@ -1,4 +1,6 @@
 let audioContext = null;
+let backgroundMusicGain = null;
+let isMusicPlaying = false;
 
 function getAudioContext() {
   if (!audioContext) {
@@ -11,6 +13,115 @@ export function resumeAudioContext() {
   const ctx = getAudioContext();
   if (ctx.state === 'suspended') {
     ctx.resume();
+  }
+}
+
+export function toggleBackgroundMusic(shouldPlay) {
+  const ctx = getAudioContext();
+  
+  if (ctx.state === 'suspended') {
+    ctx.resume();
+  }
+  
+  if (shouldPlay && !isMusicPlaying) {
+    // Start background music
+    startBackgroundMusic(ctx);
+  } else if (!shouldPlay && isMusicPlaying) {
+    // Stop background music
+    stopBackgroundMusic();
+  }
+}
+
+function startBackgroundMusic(ctx) {
+  if (isMusicPlaying) return;
+  
+  // Create a gentle melodic ambient background music
+  const masterGain = ctx.createGain();
+  masterGain.connect(ctx.destination);
+  masterGain.gain.setValueAtTime(0.15, ctx.currentTime); // Low volume for background
+  backgroundMusicGain = masterGain;
+  
+  // Create a sequence of notes for a pleasant melody
+  const melody = [
+    { note: 261.63, duration: 0.5 }, // C4
+    { note: 293.66, duration: 0.5 }, // D4
+    { note: 329.63, duration: 0.5 }, // E4
+    { note: 349.23, duration: 0.5 }, // F4
+    { note: 392.00, duration: 0.5 }, // G4
+    { note: 349.23, duration: 0.5 }, // F4
+    { note: 329.63, duration: 0.5 }, // E4
+    { note: 293.66, duration: 0.5 }, // D4
+  ];
+  
+  let currentTime = ctx.currentTime;
+  
+  // Schedule multiple loops of the melody
+  const numLoops = 8;
+  
+  for (let loop = 0; loop < numLoops; loop++) {
+melody.forEach((noteData) => {
+      const osc = ctx.createOscillator();
+      const noteGain = ctx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(noteData.note, currentTime);
+      
+      // Add slight detuning for warmth
+      const osc2 = ctx.createOscillator();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(noteData.note * 1.002, currentTime);
+      
+      osc.connect(noteGain);
+      osc2.connect(noteGain);
+      noteGain.connect(masterGain);
+      
+      // Smooth envelope
+      const attackTime = 0.05;
+      const decayTime = noteData.duration - 0.1;
+      const releaseTime = 0.05;
+      
+      noteGain.gain.setValueAtTime(0, currentTime);
+      noteGain.gain.linearRampToValueAtTime(0.3, currentTime + attackTime);
+      noteGain.gain.setValueAtTime(0.3, currentTime + attackTime + decayTime);
+      noteGain.gain.linearRampToValueAtTime(0, currentTime + attackTime + decayTime + releaseTime);
+      
+      const noteDuration = noteData.duration * 0.95;
+      osc.start(currentTime);
+      osc.stop(currentTime + noteDuration);
+      osc2.start(currentTime);
+      osc2.stop(currentTime + noteDuration);
+      
+      currentTime += noteData.duration;
+    });
+  }
+  
+  // Loop the music by reconnecting when done
+  musicLoopTimeout = setTimeout(() => {
+    if (isMusicPlaying) {
+      startBackgroundMusic(ctx);
+    }
+  }, (currentTime - ctx.currentTime) * 1000);
+  
+  isMusicPlaying = true;
+}
+
+let musicLoopTimeout = null;
+
+function stopBackgroundMusic() {
+  if (musicLoopTimeout) {
+    clearTimeout(musicLoopTimeout);
+    musicLoopTimeout = null;
+  }
+  if (backgroundMusicGain) {
+    backgroundMusicGain.disconnect();
+    backgroundMusicGain = null;
+  }
+  isMusicPlaying = false;
+}
+
+export function setMusicVolume(volume) {
+  if (backgroundMusicGain) {
+    backgroundMusicGain.gain.setValueAtTime(volume, audioContext.currentTime);
   }
 }
 

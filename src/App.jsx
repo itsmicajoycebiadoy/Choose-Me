@@ -1,7 +1,7 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import questions from "./data/questions";
 import COLORS from "./data/colors";
-import { playSound } from "./utils/sounds";
+import { playSound, toggleBackgroundMusic } from "./utils/sounds";
 import { useTimer } from "./hooks/useTimer";
 import Confetti from "./components/Confetti";
 
@@ -20,8 +20,17 @@ export default function App() {
   const [feedback, setFeedback] = useState(null);
   const [score, setScore] = useState(0);
   const [totalAnswered, setTotalAnswered] = useState(0);
-  const [showConfetti, setShowConfetti] = useState(false);
+const [showConfetti, setShowConfetti] = useState(false);
   const [usedQIds, setUsedQIds] = useState([]);
+
+  // 🎵 BACKGROUND MUSIC
+  useEffect(() => {
+    if (phase === "pick" || phase === "question" || phase === "result") {
+      toggleBackgroundMusic(true);
+    } else {
+      toggleBackgroundMusic(false);
+    }
+  }, [phase]);
 
   // 🎯 RANDOM QUESTION
   const getRandomQuestion = useCallback((usedIds) => {
@@ -48,7 +57,7 @@ export default function App() {
     pause: pauseTimer,
     resume: resumeTimer,
     isRunning,
-  } = useTimer(5, handleExpire);
+} = useTimer(10, handleExpire);
 
   // 🎨 PICK COLOR
   const handleColorPick = (color) => {
@@ -135,8 +144,8 @@ export default function App() {
     setUsedQIds([]);
   };
 
-  return (
-    <div style={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", background: "var(--bg)" }}>
+return (
+    <div style={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", padding: "20px" }}>
       
       {showConfetti && <Confetti />}
 
@@ -176,6 +185,7 @@ export default function App() {
           onRetry={handleRetry}
           onChangeColor={handleChangeColor}
         />
+        
       )}
 
       {phase === "end" && (

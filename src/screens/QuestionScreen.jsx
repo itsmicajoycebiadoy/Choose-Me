@@ -7,15 +7,16 @@ export default function QuestionScreen({ question, selectedColor, timer, chosen,
 
   return (
     <div style={{ width: "100%", maxWidth: 680, animation: "slideUp 0.4s ease" }}>
-      <div style={{ textAlign: "center", marginBottom: 16 }}>
+      <div style={{ textAlign: "center", marginBottom: 20 }}>
         <span style={{
           background: selectedColor?.bg,
           color: "#fff",
           borderRadius: 50,
-          padding: "6px 20px",
+          padding: "8px 24px",
           fontWeight: 700,
-          fontSize: "0.9rem",
-          boxShadow: `0 4px 16px ${selectedColor?.glow}`,
+          fontSize: "1rem",
+          boxShadow: `0 8px 24px ${selectedColor?.glow}66`,
+          border: "2px solid rgba(255,255,255,0.15)",
         }}>
           {selectedColor?.emoji} {selectedColor?.name}
         </span>
@@ -28,24 +29,25 @@ export default function QuestionScreen({ question, selectedColor, timer, chosen,
       />
       <div style={{
         background: "rgba(255,255,255,0.06)",
-        border: "1px solid rgba(255,255,255,0.12)",
-        borderRadius: 20,
-        padding: "24px",
-        marginBottom: 20,
-        backdropFilter: "blur(12px)",
+        border: "1px solid rgba(255,255,255,0.1)",
+        borderRadius: 24,
+        padding: "28px",
+        marginBottom: 24,
+        backdropFilter: "blur(16px)",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
       }}>
         <p style={{
           color: "#fff",
-          fontSize: "clamp(1rem, 2.5vw, 1.2rem)",
+          fontSize: "clamp(1.1rem, 3vw, 1.35rem)",
           fontWeight: 600,
           margin: 0,
-          lineHeight: 1.5,
+          lineHeight: 1.6,
           textAlign: "center"
         }}>
           {question.question}
         </p>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
         {question.choices.map((choice, i) => (
           <ChoiceButton
             key={i}
@@ -62,11 +64,12 @@ export default function QuestionScreen({ question, selectedColor, timer, chosen,
       {isTimeout && (
         <div style={{
           textAlign: "center",
-          marginTop: 20,
+          marginTop: 24,
           color: "#FFA502",
           fontWeight: 700,
-          fontSize: "1.1rem",
-          animation: "fadeIn 0.3s"
+          fontSize: "1.15rem",
+          animation: "fadeIn 0.3s",
+          textShadow: "0 0 20px rgba(255,165,2,0.5)",
         }}>
           Times Up! Moving to next...
         </div>

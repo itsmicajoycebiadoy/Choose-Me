@@ -9,6 +9,7 @@ export default function ResultScreen({
   onChangeColor
 }) {
   const isLast = usedColors.length + 1 >= COLORS.length;
+  const titleColor = feedback === "correct" ? "#2ED573" : "#FF4757";
 
   return (
     <div style={{ 
@@ -18,14 +19,16 @@ export default function ResultScreen({
       animation: "slideUp 0.4s ease" 
     }}>
       
-      <div style={{ fontSize: 64, marginBottom: 16 }}>
+      <div style={{ fontSize: 72, marginBottom: 20, animation: feedback === "correct" ? "float 2s ease-in-out infinite" : "none" }}>
         {feedback === "correct" ? "🎉" : feedback === "timeout" ? "⏰" : "😬"}
       </div>
 
       <h2 style={{ 
-        color: feedback === "correct" ? "#2ED573" : "#FF4757", 
-        fontSize: "clamp(1.5rem, 4vw, 2.2rem)", 
-        fontWeight: 900 
+        color: titleColor, 
+        fontSize: "clamp(1.6rem, 5vw, 2.4rem)", 
+        fontWeight: 900,
+        textShadow: `0 0 30px ${feedback === "correct" ? "rgba(46,213,115,0.5)" : "rgba(255,71,87,0.5)"}`,
+        marginBottom: 28
       }}>
         {feedback === "correct" 
           ? "Correct!" 
@@ -35,17 +38,20 @@ export default function ResultScreen({
       </h2>
 
       <div style={{
-        background: "rgba(46, 213, 115, 0.12)",
-        border: "2px solid #2ED573",
-        borderRadius: 16,
-        padding: "24px 32px",
-        marginBottom: 32,
-        backdropFilter: "blur(8px)"
+        background: "rgba(255,255,255,0.06)",
+        border: feedback === "correct" ? "2px solid rgba(46,213,115,0.4)" : "2px solid rgba(255,71,87,0.4)",
+        borderRadius: 20,
+        padding: "28px 32px",
+        marginBottom: 36,
+        backdropFilter: "blur(16px)",
+        boxShadow: feedback === "correct" 
+          ? "0 8px 32px rgba(46,213,115,0.15)" 
+          : "0 8px 32px rgba(255,71,87,0.15)"
       }}>
         <p style={{ 
-          color: "#2ED573", 
+          color: titleColor, 
           fontWeight: 700,
-          fontSize: "1.2rem",
+          fontSize: "1.3rem",
           margin: "0 0 16px 0"
         }}>
           Answer: {question.answer}
@@ -53,8 +59,8 @@ export default function ResultScreen({
         
         <p style={{ 
           color: "rgba(255,255,255,0.85)",
-          fontSize: "0.95rem",
-          lineHeight: "1.6",
+          fontSize: "1rem",
+          lineHeight: "1.7",
           margin: 0
         }}>
           {question.explanation}
@@ -71,23 +77,23 @@ export default function ResultScreen({
               color: "#fff",
               border: "none",
               borderRadius: 50,
-              padding: "16px 48px",
-              fontSize: "1.2rem",
+              padding: "18px 52px",
+              fontSize: "1.25rem",
               fontWeight: 700,
               cursor: "pointer",
-              boxShadow: "0 8px 32px rgba(255,71,87,0.5)",
-              transition: "transform 0.2s, box-shadow 0.2s",
+              boxShadow: "0 8px 32px rgba(255,71,87,0.45), inset 0 2px 0 rgba(255,255,255,0.15)",
+              transition: "all 0.25s ease",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.07)";
-              e.currentTarget.style.boxShadow = "0 12px 40px rgba(255,71,87,0.7)";
+              e.currentTarget.style.transform = "scale(1.05) translateY(-3px)";
+              e.currentTarget.style.boxShadow = "0 16px 48px rgba(255,71,87,0.55)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "0 8px 32px rgba(255,71,87,0.5)";
+              e.currentTarget.style.transform = "scale(1) translateY(0)";
+              e.currentTarget.style.boxShadow = "0 8px 32px rgba(255,71,87,0.45), inset 0 2px 0 rgba(255,255,255,0.15)";
             }}
           >
-            Retry Question
+            🔁 Retry Question
           </button>
 
           <button 
@@ -97,23 +103,23 @@ export default function ResultScreen({
               color: "#fff",
               border: "none",
               borderRadius: 50,
-              padding: "16px 48px",
-              fontSize: "1.2rem",
+              padding: "18px 52px",
+              fontSize: "1.25rem",
               fontWeight: 700,
               cursor: "pointer",
-              boxShadow: "0 8px 32px rgba(255, 165, 2, 0.5)",
-              transition: "transform 0.2s, box-shadow 0.2s",
+              boxShadow: "0 8px 32px rgba(255, 165, 2, 0.45), inset 0 2px 0 rgba(255,255,255,0.15)",
+              transition: "all 0.25s ease",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.07)";
-              e.currentTarget.style.boxShadow = "0 12px 40px rgba(255, 165, 2, 0.7)";
+              e.currentTarget.style.transform = "scale(1.05) translateY(-3px)";
+              e.currentTarget.style.boxShadow = "0 16px 48px rgba(255, 165, 2, 0.55)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "0 8px 32px rgba(255, 165, 2, 0.5)";
+              e.currentTarget.style.transform = "scale(1) translateY(0)";
+              e.currentTarget.style.boxShadow = "0 8px 32px rgba(255, 165, 2, 0.45), inset 0 2px 0 rgba(255,255,255,0.15)";
             }}
           >
-            Change Color
+            🎨 Change Color
           </button>
         </div>
       )}
@@ -124,27 +130,27 @@ export default function ResultScreen({
           <button 
             onClick={onNext}
             style={{
-              background: "linear-gradient(135deg, #A55EEA, #1E90FF)",
+              background: "linear-gradient(135deg, #A55EEA, #6C5CE7)",
               color: "#fff",
               border: "none",
               borderRadius: 50,
-              padding: "16px 48px",
-              fontSize: "1.2rem",
+              padding: "18px 52px",
+              fontSize: "1.25rem",
               fontWeight: 700,
               cursor: "pointer",
-              boxShadow: "0 8px 32px rgba(165,94,234,0.5)",
-              transition: "transform 0.2s, box-shadow 0.2s",
+              boxShadow: "0 8px 32px rgba(165,94,234,0.45), inset 0 2px 0 rgba(255,255,255,0.15)",
+              transition: "all 0.25s ease",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.07)";
-              e.currentTarget.style.boxShadow = "0 12px 40px rgba(165,94,234,0.7)";
+              e.currentTarget.style.transform = "scale(1.05) translateY(-3px)";
+              e.currentTarget.style.boxShadow = "0 16px 48px rgba(165,94,234,0.55)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "0 8px 32px rgba(165,94,234,0.5)";
+              e.currentTarget.style.transform = "scale(1) translateY(0)";
+              e.currentTarget.style.boxShadow = "0 8px 32px rgba(165,94,234,0.45), inset 0 2px 0 rgba(255,255,255,0.15)";
             }}
           >
-            {isLast ? "Finish" : "Next"}
+            {isLast ? "🏁 Finish" : "➡️ Next"}
           </button>
 
           <button 
@@ -154,23 +160,23 @@ export default function ResultScreen({
               color: "#fff",
               border: "none",
               borderRadius: 50,
-              padding: "16px 48px",
-              fontSize: "1.2rem",
+              padding: "18px 52px",
+              fontSize: "1.25rem",
               fontWeight: 700,
               cursor: "pointer",
-              boxShadow: "0 8px 32px rgba(255, 165, 2, 0.5)",
-              transition: "transform 0.2s, box-shadow 0.2s",
+              boxShadow: "0 8px 32px rgba(255, 165, 2, 0.45), inset 0 2px 0 rgba(255,255,255,0.15)",
+              transition: "all 0.25s ease",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.07)";
-              e.currentTarget.style.boxShadow = "0 12px 40px rgba(255, 165, 2, 0.7)";
+              e.currentTarget.style.transform = "scale(1.05) translateY(-3px)";
+              e.currentTarget.style.boxShadow = "0 16px 48px rgba(255, 165, 2, 0.55)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "0 8px 32px rgba(255, 165, 2, 0.5)";
+              e.currentTarget.style.transform = "scale(1) translateY(0)";
+              e.currentTarget.style.boxShadow = "0 8px 32px rgba(255, 165, 2, 0.45), inset 0 2px 0 rgba(255,255,255,0.15)";
             }}
           >
-            Change Color
+            🎨 Change Color
           </button>
         </div>
       )}
