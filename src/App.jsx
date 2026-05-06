@@ -4,6 +4,7 @@ import COLORS from "./data/colors";
 import { playSound, toggleBackgroundMusic } from "./utils/sounds";
 import { useTimer } from "./hooks/useTimer";
 import Confetti from "./components/Confetti";
+import AnimatedBackground from "./components/AnimatedBackground";
 
 import HomeScreen from "./screens/HomeScreen";
 import PickScreen from "./screens/PickScreen";
@@ -20,7 +21,7 @@ export default function App() {
   const [feedback, setFeedback] = useState(null);
   const [score, setScore] = useState(0);
   const [totalAnswered, setTotalAnswered] = useState(0);
-const [showConfetti, setShowConfetti] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   const [usedQIds, setUsedQIds] = useState([]);
 
   // 🎵 BACKGROUND MUSIC
@@ -122,11 +123,15 @@ const [showConfetti, setShowConfetti] = useState(false);
 
   // 🎨 CHANGE COLOR
   const handleChangeColor = () => {
+    // Change Color after wrong answer.
+    // The color buttons must become clickable again, so we clear selectedColor
+    // and ensure current question retry state still works.
     stopTimer();
     setChosen(null);
     setFeedback(null);
-    setCurrentQ(null);
     setSelectedColor(null);
+
+    // Keep currentQ so the user is effectively retrying the same question.
     setPhase("pick");
   };
 
@@ -145,7 +150,8 @@ const [showConfetti, setShowConfetti] = useState(false);
   };
 
 return (
-    <div style={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", padding: "20px" }}>
+    <div style={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", padding: "20px", position: "relative" }}>
+      <AnimatedBackground />
       
       {showConfetti && <Confetti />}
 
