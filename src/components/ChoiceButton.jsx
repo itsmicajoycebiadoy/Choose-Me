@@ -32,7 +32,9 @@ export default function ChoiceButton({ choice, index, chosen, answer, feedback, 
         background:   bg,
         border,
         borderRadius: 16,
-        padding:      "18px 14px",
+        width: "100%",
+        minHeight: 86,
+        padding:      "16px 14px",
         cursor:       answered ? "default" : "pointer",
         color,
         fontSize:     "clamp(0.9rem, 2.2vw, 1.05rem)",
@@ -41,6 +43,12 @@ export default function ChoiceButton({ choice, index, chosen, answer, feedback, 
         textAlign:    "center",
         backdropFilter: "blur(12px)",
         boxShadow: boxShadow,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 2,
+        boxSizing: "border-box",
       }}
       onMouseEnter={(e) => {
         if (!answered) {
@@ -57,10 +65,10 @@ export default function ChoiceButton({ choice, index, chosen, answer, feedback, 
         }
       }}
     >
-      <span style={{ display: "block", fontSize: "1.5rem", marginBottom: 6, fontWeight: 700 }}>
+      <span style={{ display: "block", fontSize: "1.5rem", fontWeight: 700, lineHeight: 1 }}>
         {LABELS[index]}
       </span>
-      {choice}
+      <span style={{ lineHeight: 1.1 }}>{choice}</span>
     </button>
   );
 }

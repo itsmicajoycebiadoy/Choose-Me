@@ -39,6 +39,31 @@ const COLORS = [
     emoji: "🟣",
     glow: "rgba(165,94,234,0.5)",
   },
+  {
+    name: "Sa Orange",
+    bg: "#FF8C42",
+    light: "#FFC27A",
+    dark: "#C0561A",
+    emoji: "🟠",
+    glow: "rgba(255,140,66,0.5)",
+  },
+  {
+    name: "Sa Pink",
+    bg: "#FF4D9D",
+    light: "#FF7DB8",
+    dark: "#C2185B",
+    emoji: "💗",
+    glow: "rgba(255,77,157,0.5)",
+  },
+  {
+    name: "Itim",
+    bg: "#1C1C1C",
+    light: "#444444",
+    dark: "#000000",
+    emoji: "⚫",
+    glow: "rgba(0,0,0,0.35)",
+  },
 ];
 
 export default COLORS;
+

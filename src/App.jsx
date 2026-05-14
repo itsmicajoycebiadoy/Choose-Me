@@ -11,6 +11,9 @@ import PickScreen from "./screens/PickScreen";
 import QuestionScreen from "./screens/QuestionScreen";
 import ResultScreen from "./screens/ResultScreen";
 import EndScreen from "./screens/EndScreen";
+import PowerUpBar from "./components/PowerUpBar";
+import SideChatBot from "./components/SideChatBot";
+
 
 export default function App() {
   const [phase, setPhase] = useState("home");
@@ -23,6 +26,16 @@ export default function App() {
   const [totalAnswered, setTotalAnswered] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
   const [usedQIds, setUsedQIds] = useState([]);
+
+  // 🎯 Streak / Combo
+  const [streak, setStreak] = useState(0);
+  const [bestStreak, setBestStreak] = useState(0);
+  void streak;
+  void bestStreak;
+
+  // 🪄 50/50 power-up: once per game, hide 2 wrong choices
+  const [fiftyChoices, setFiftyChoices] = useState(null);
+  const [usedFifty, setUsedFifty] = useState(false);
 
   // 🎵 BACKGROUND MUSIC
   useEffect(() => {
@@ -58,7 +71,8 @@ export default function App() {
     pause: pauseTimer,
     resume: resumeTimer,
     isRunning,
-} = useTimer(10, handleExpire);
+  } = useTimer(10, handleExpire);
+
 
   // 🎨 PICK COLOR
   const handleColorPick = (color) => {
@@ -68,6 +82,10 @@ export default function App() {
     setSelectedColor(color);
     setChosen(null);
     setFeedback(null);
+
+    // reset power-up state for new question
+    setFiftyChoices(null);
+    setUsedFifty(false);
 
     setPhase("question");
     startTimer();
@@ -87,14 +105,24 @@ export default function App() {
       // ✅ mark used ONLY when correct
       setUsedQIds((prev) => [...prev, currentQ.id]);
 
-      setScore((s) => s + 1);
       setTotalAnswered((t) => t + 1);
 
+      // 🎯 streak combo + bonus at streak 3+
+      setStreak((prevStreak) => {
+        const next = prevStreak + 1;
+        setBestStreak((b) => Math.max(b, next));
+        const bonus = next >= 3 ? 1 : 0;
+        setScore((s) => s + 1 + bonus);
+        return next;
+      });
+
+      // use current streak in UI state wiring
       playSound("correct");
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 2500);
     } else {
       playSound("error");
+      setStreak(0);
     }
 
     setTimeout(() => setPhase("result"), 1800);
@@ -147,6 +175,10 @@ export default function App() {
     setScore(0);
     setTotalAnswered(0);
     setUsedQIds([]);
+    setStreak(0);
+    setBestStreak(0);
+    setFiftyChoices(null);
+    setUsedFifty(false);
   };
 
 return (
@@ -155,7 +187,10 @@ return (
       
       {showConfetti && <Confetti />}
 
+      <SideChatBot />
+
       {phase === "home" && <HomeScreen onStart={() => setPhase("pick")} />}
+
 
       {phase === "pick" && (
         <PickScreen
@@ -167,17 +202,36 @@ return (
       )}
 
       {phase === "question" && currentQ && (
-        <QuestionScreen
-          question={currentQ}
-          selectedColor={selectedColor}
-          timer={timer}
-          chosen={chosen}
-          feedback={feedback}
-          onAnswer={handleAnswer}
-          onPause={pauseTimer}
-          onResume={resumeTimer}
-          isTimerRunning={isRunning}
-        />
+        <>
+          <PowerUpBar
+            onUseFifty={() => {
+              if (!currentQ || usedFifty) return;
+
+              // Keep the correct answer + pick one wrong to keep (hide others)
+              const correct = currentQ.answer;
+              const wrongs = currentQ.choices.filter((c) => c !== correct);
+              const keepWrong = wrongs[Math.floor(Math.random() * wrongs.length)];
+
+              setFiftyChoices([correct, keepWrong]);
+              setUsedFifty(true);
+            }}
+            canUseFifty={!!currentQ && !usedFifty}
+            usedFifty={usedFifty}
+          />
+
+          <QuestionScreen
+            question={currentQ}
+            selectedColor={selectedColor}
+            timer={timer}
+            chosen={chosen}
+            feedback={feedback}
+            onAnswer={handleAnswer}
+            onPause={pauseTimer}
+            onResume={resumeTimer}
+            isTimerRunning={isRunning}
+            fiftyChoices={fiftyChoices}
+          />
+        </>
       )}
 
       {phase === "result" && currentQ && (

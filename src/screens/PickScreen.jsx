@@ -70,7 +70,9 @@ export default function PickScreen({ usedColors, score, totalAnswered, onPick })
                   ? "2px solid rgba(255,255,255,0.08)"
                   : `2px solid ${color.light}66`,
                 borderRadius: 24,
-                padding: "36px 20px",
+                width: "100%",
+                minHeight: 160,
+                padding: "28px 20px",
                 cursor: used ? "not-allowed" : "pointer",
                 opacity: used ? 0.25 : 1,
                 transition: "all 0.2s ease",
@@ -79,7 +81,9 @@ export default function PickScreen({ usedColors, score, totalAnswered, onPick })
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                justifyContent: "center",
                 gap: 14,
+                boxSizing: "border-box",
               }}
               onMouseEnter={(e) => {
                 if (!used) {
