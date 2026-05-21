@@ -50,7 +50,7 @@ npm run dev
 npm run build
 ```
 
-## 🎮 How to Play
+## How to Play
 
 1. **Start Game** - Click "Start" on the home screen
 2. **Pick a Color** - Choose which color you'd like to answer questions for
