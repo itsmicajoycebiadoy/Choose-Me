@@ -1,8 +1,8 @@
-# 🎯 Piliin Mo Ako - Color Quiz Game
+# Piliin Mo Ako - Color Quiz Game
 
 A fun and interactive Filipino quiz game where players answer general knowledge questions while racing against the clock! Choose the correct color that matches the answer to each trivia question.
 
-## 📱 Features
+## Features
 
 - **Interactive Quiz Game** - Answer trivia questions about general knowledge
 - **Timer Challenge** - Race against a 10-second countdown
@@ -13,14 +13,14 @@ A fun and interactive Filipino quiz game where players answer general knowledge 
 - **Confetti Celebration** - Celebrate correct answers with confetti!
 - **Tailwind CSS** - Modern, responsive UI styling
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **React** - Frontend framework
 - **Vite** - Build tool
 - **Tailwind CSS v4** - Styling
 - **Web Audio API** - Sound effects and music
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -29,9 +29,8 @@ A fun and interactive Filipino quiz game where players answer general knowledge 
 
 ### Installation
 
-1. Clone the repository:
+1. Go to the project folder:
 ```bash
-git clone <repository-url>
 cd piliin-mo-ako
 ```
 
@@ -39,6 +38,7 @@ cd piliin-mo-ako
 ```bash
 npm install
 ```
+
 
 3. Start the development server:
 ```bash
@@ -59,7 +59,7 @@ npm run build
 5. **Progress** - Move to the next color after each correct answer
 6. **Finish** - Complete all colors to see your final score!
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 piliin-mo-ako/
@@ -91,7 +91,7 @@ piliin-mo-ako/
 └── postcss.config.js
 ```
 
-## 🎵 Sound Effects
+## Sound Effects
 
 - **Correct Answer** - Celebration clap sounds
 - **Wrong Answer** - Error buzzer
@@ -99,7 +99,7 @@ piliin-mo-ako/
 - **Timeout** - Time's up sound
 - **Background Music** - Ambient melody (plays during pick, question, and result phases)
 
-## 📝 Available Colors
+## Available Colors
 
 The game includes 8 colors:
 - Pula (Red)
@@ -111,7 +111,7 @@ The game includes 8 colors:
 - Pink (Pink)
 - Itim (Black)
 
-## 📝 Quiz Categories
+## Quiz Categories
 
 The game includes trivia questions covering:
 - Communication research
@@ -119,7 +119,7 @@ The game includes trivia questions covering:
 - Project management
 - General knowledge
 
-## 🔧 Configuration
+## Configuration
 
 ### Tailwind CSS
 
@@ -134,7 +134,7 @@ Default timer is set to 10 seconds. Can be modified in `App.jsx`:
 const { timer, start: startTimer, ... } = useTimer(10, handleExpire);
 ```
 
-## 📄 License
+## License
 
 This project is for educational purposes.
 
