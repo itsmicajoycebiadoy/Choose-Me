@@ -1,8 +1,11 @@
+import { THEME } from "../utils/theme";
+
 export default function TimerCircle({ timer, onPause, onResume, isRunning }) {
+
   const getColor = () => {
-    if (timer <= 3) return "#FF4757";
-    if (timer <= 5) return "#FFA502";
-    return "#2ED573";
+    if (timer <= 3) return THEME.wrong.color;
+    if (timer <= 5) return THEME.timeout.color;
+    return THEME.correct.color;
   };
   
   const color = getColor();
@@ -17,7 +20,10 @@ export default function TimerCircle({ timer, onPause, onResume, isRunning }) {
           justifyContent: "center",
           width: 80,
           height: 80,
-          borderRadius: "50%",
+          borderRadius: "50%", 
+          // scales a bit on small screens
+          maxWidth: "22vw",
+          maxHeight: "22vw",
           background: "rgba(255, 255, 255, 0.1)",
           border: `3px solid ${color}`,
           fontSize: "2.2rem",
@@ -51,7 +57,7 @@ export default function TimerCircle({ timer, onPause, onResume, isRunning }) {
               border: "1px solid rgba(46,213,115,0.4)",
               borderRadius: 30,
               padding: "6px 16px",
-              color: "#2ED573",
+              color: THEME.correct.color,
               fontSize: "0.75rem",
               cursor: "pointer",
               fontWeight: 600,
@@ -80,7 +86,7 @@ export default function TimerCircle({ timer, onPause, onResume, isRunning }) {
               border: "1px solid rgba(255,71,87,0.4)",
               borderRadius: 30,
               padding: "6px 16px",
-              color: "#FF4757",
+              color: THEME.wrong.color,
               fontSize: "0.75rem",
               cursor: "pointer",
               fontWeight: 600,

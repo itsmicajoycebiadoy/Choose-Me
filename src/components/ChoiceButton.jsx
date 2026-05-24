@@ -29,12 +29,14 @@ export default function ChoiceButton({ choice, index, chosen, answer, feedback, 
       onClick={handleAnswer}
       disabled={answered}
       style={{
+        flex: 1,
         background:   bg,
         border,
         borderRadius: 16,
         width: "100%",
-        minHeight: 86,
+        minHeight: 94,
         padding:      "16px 14px",
+        height: "100%",
         cursor:       answered ? "default" : "pointer",
         color,
         fontSize:     "clamp(0.9rem, 2.2vw, 1.05rem)",

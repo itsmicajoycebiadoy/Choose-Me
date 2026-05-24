@@ -82,17 +82,27 @@ export default function QuestionScreen({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: "repeat(2, minmax(160px, 1fr))",
+          gridAutoRows: "1fr",
           gap: 14,
           alignItems: "stretch",
           justifyItems: "stretch",
+          width: "100%",
+          minHeight: 220,
         }}
       >
         {question.choices.map((choice, i) => {
           const hidden = Array.isArray(fiftyChoices) && !fiftyChoices.includes(choice);
 
           return (
-            <div key={i} style={{ display: hidden ? "none" : "block" }}>
+            <div
+                key={i}
+                style={{
+                  display: hidden ? "none" : "flex",
+                  height: "100%",
+                  alignItems: "stretch",
+                }}
+              >
               <ChoiceButton
                 choice={choice}
                 index={i}

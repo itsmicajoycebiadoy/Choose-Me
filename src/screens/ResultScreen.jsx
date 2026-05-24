@@ -1,4 +1,5 @@
 import COLORS from "../data/colors";
+import { THEME, ICONS } from "../utils/theme";
 
 export default function ResultScreen({ 
   question, 
@@ -9,7 +10,7 @@ export default function ResultScreen({
   onChangeColor
 }) {
   const isLast = usedColors.length + 1 >= COLORS.length;
-  const titleColor = feedback === "correct" ? "#2ED573" : "#FF4757";
+  const titleColor = feedback === "correct" ? THEME.correct.color : feedback === "timeout" ? THEME.timeout.color : THEME.wrong.color;
 
   return (
     <div style={{ 
@@ -73,7 +74,7 @@ export default function ResultScreen({
           <button 
             onClick={onRetry}
             style={{
-              background: "linear-gradient(135deg, #FF4757, #FF6B81)",
+              background: THEME.retryGradient,
               color: "#fff",
               border: "none",
               borderRadius: 50,
